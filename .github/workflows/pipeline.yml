@@ -205,7 +205,7 @@ jobs:
 
   deploy-gate:
     name: Stage 5 - Policy-Gated Deployment
-    needs: build-scan
+    needs: [build-scan, sign]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
