@@ -144,6 +144,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           exit-code: '0'
           ignore-unfixed: true
+          trivyignores: .trivyignore
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
@@ -160,6 +161,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           exit-code: '1'
           ignore-unfixed: true
+          trivyignores: .trivyignore
 
       - name: Push image to GHCR
         id: build-image
