@@ -1,5 +1,6 @@
 # Stage 1: Build (install prod dependencies)
 FROM node:20-alpine AS build
+RUN apk update && apk upgrade
 WORKDIR /app
 COPY package.json package-lock.json* ./
 # We don't have a package-lock yet, so use npm install if ci fails, or just npm install --omit=dev
@@ -7,6 +8,7 @@ RUN npm install --omit=dev
 
 # Stage 2: Runtime (minimal image)
 FROM node:20-alpine AS runtime
+RUN apk update && apk upgrade
 WORKDIR /app
 
 # Create a non-root user
