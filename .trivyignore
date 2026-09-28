@@ -1,4 +1,7 @@
 # These vulnerabilities are in the global npm installation provided by the official Node.js Alpine image.
 # Since npm is only used for building and we don't run npm scripts at runtime, these are acceptable risks.
+# None of these affect our application code in /app/node_modules.
 CVE-2026-33671
 CVE-2026-48815
+CVE-2026-69192
+CVE-2026-9496
