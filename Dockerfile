@@ -1,5 +1,5 @@
 # Stage 1: Build (install prod dependencies)
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 RUN apk update && apk upgrade
 WORKDIR /app
 COPY package.json package-lock.json* ./
@@ -7,7 +7,7 @@ COPY package.json package-lock.json* ./
 RUN npm install --omit=dev
 
 # Stage 2: Runtime (minimal image)
-FROM node:20-alpine AS runtime
+FROM node:22-alpine AS runtime
 RUN apk update && apk upgrade
 WORKDIR /app
 
