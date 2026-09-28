@@ -135,14 +135,14 @@ jobs:
           path: sbom.spdx.json
           retention-days: 7
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner (generate SARIF)
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ github.repository }}:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -151,6 +151,15 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
           category: trivy
+
+      - name: Run Trivy vulnerability scanner (enforce gate)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:latest
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
 
       - name: Push image to GHCR
         id: build-image
