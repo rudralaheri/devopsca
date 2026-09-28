@@ -1,0 +1,10 @@
+{
+  "image_digest": "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "signatures": [
+    {
+      "issuer": "https://token.actions.githubusercontent.com",
+      "subject": "https://github.com/my-org/zerotrust-devsecops/.github/workflows/pipeline.yml",
+      "digest": "sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+node_modules
+test/
+.git/
+docs/
+*.md
+.eslintrc.json
+docker-compose.yml
+Dockerfile

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="0.628">
+  <testsuite name="API Tests" errors="0" failures="0" skipped="0" timestamp="2026-09-27T07:42:04" time="0.556" tests="7">
+    <testcase classname="API Tests GET /health returns 200" name="API Tests GET /health returns 200" time="0.055">
+    </testcase>
+    <testcase classname="API Tests GET /api/tasks returns 200 and an array" name="API Tests GET /api/tasks returns 200 and an array" time="0.021">
+    </testcase>
+    <testcase classname="API Tests GET /api/tasks/:id with valid ID returns 200" name="API Tests GET /api/tasks/:id with valid ID returns 200" time="0.004">
+    </testcase>
+    <testcase classname="API Tests GET /api/tasks/:id with invalid ID returns 404" name="API Tests GET /api/tasks/:id with invalid ID returns 404" time="0.003">
+    </testcase>
+    <testcase classname="API Tests POST /api/tasks creates a task" name="API Tests POST /api/tasks creates a task" time="0.01">
+    </testcase>
+    <testcase classname="API Tests POST /api/tasks with missing title returns 400" name="API Tests POST /api/tasks with missing title returns 400" time="0.002">
+    </testcase>
+    <testcase classname="API Tests POST /api/tasks with empty title returns 400" name="API Tests POST /api/tasks with empty title returns 400" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>

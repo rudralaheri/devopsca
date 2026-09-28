@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    image: ${IMAGE:?IMAGE environment variable must be set}
+    ports:
+      - "3000:3000"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
