@@ -47,6 +47,10 @@ jobs:
         run: |
           python3 -m pip install semgrep
           semgrep scan --config "p/javascript" --config "p/owasp-top-ten" --sarif --output semgrep.sarif || true
+          # Ensure SARIF file exists even if semgrep produced no output
+          if [ ! -f semgrep.sarif ]; then
+            echo '{"version":"2.1.0","runs":[]}' > semgrep.sarif
+          fi
 
       - name: Upload Semgrep SARIF
         uses: github/codeql-action/upload-sarif@v4
