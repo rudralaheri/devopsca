@@ -276,10 +276,17 @@ docker compose up
 
 ## 7. Attack Demo Scenarios
 
-The power of this pipeline is its **enforcement**. The following scenarios can be run locally to demonstrate the policy gate in action.
+The power of this pipeline is its **cryptographic policy enforcement**. To demonstrate that unauthorized images are rejected, run the automated attack simulation suite:
+
+```bash
+chmod +x ./scripts/demo-attack-scenarios.sh
+./scripts/demo-attack-scenarios.sh
+```
+
+This automated suite runs through all four Cosign failure scenarios and verifies that `docker compose up` is never invoked:
 
 ### Scenario 1: Unsigned Image Attack
-An attacker tries to deploy an image pulled from Docker Hub — no pipeline signature exists.
+An attacker tries to deploy an arbitrary public image pulled from Docker Hub (no pipeline signature exists).
 
 ```bash
 export IMAGE="nginx:latest"
@@ -288,7 +295,7 @@ export EXPECTED_IDENTITY_REGEX="^https://github.com/rudralaheri/devopsca/.*"
 
 ./scripts/verify-and-deploy.sh
 ```
-> **Expected Result:** `❌ SIGNATURE VERIFICATION FAILED. Deployment rejected.`
+> **Expected Result:** `❌ SIGNATURE VERIFICATION FAILED. Deployment rejected.` (No signature found in registry).
 
 ---
 
@@ -306,8 +313,36 @@ export EXPECTED_IDENTITY_REGEX="^https://github.com/rudralaheri/devopsca/.*"
 
 ---
 
-### Scenario 3: Vulnerable Dependency Attack (CVE Demo)
-Change `express` back to a known-vulnerable version to show Trivy catching it:
+### Scenario 3: Tag Mutation / Digest Tampering Attack
+An attacker tampers with the container layers or re-tags a different digest under an approved name.
+
+```bash
+export IMAGE="ghcr.io/rudralaheri/devopsca@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+export EXPECTED_ISSUER="https://token.actions.githubusercontent.com"
+export EXPECTED_IDENTITY_REGEX="^https://github.com/rudralaheri/devopsca/.*"
+
+./scripts/verify-and-deploy.sh
+```
+> **Expected Result:** `❌ SIGNATURE VERIFICATION FAILED.` — The cryptographic digest differs from the signed record.
+
+---
+
+### Scenario 4: Untrusted OIDC Issuer Attack
+A developer attempts to sign an image using a personal Google/corporate identity provider outside the official GitHub Actions CI/CD pipeline.
+
+```bash
+export IMAGE="nginx:latest"
+export EXPECTED_ISSUER="https://accounts.google.com"
+export EXPECTED_IDENTITY_REGEX="^https://github.com/rudralaheri/devopsca/.*"
+
+./scripts/verify-and-deploy.sh
+```
+> **Expected Result:** `❌ SIGNATURE VERIFICATION FAILED.` — Issuer does not match the mandated GitHub Actions token authority.
+
+---
+
+### Scenario 5: Vulnerable Dependency Attack (CVE Demo)
+Change `express` back to a known-vulnerable version to show Trivy catching it in Stage 3:
 
 ```json
 // In package.json, temporarily change:
